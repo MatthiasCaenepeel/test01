@@ -25,10 +25,10 @@ function receiveMessageCallback(msg) {
     console.log(chalk.yellow.bold("------------------------------"));
     console.log(chalk.yellow.bold("Message received from IoT Hub:"));
     var message = msg.getData();
-    var data = JSON.parse(message);
-    console.log(chalk.blue.bold(data.rgb));
+    var cmd = JSON.parse(cmdStr);
+    console.log(chalk.blue.bold(cmdStr));
 
-    api.setLightState(1,data) // provide a value of false to turn off
+    api.setLightState(cmd.light,cmd.lightState) // provide a value of false to turn off
     .then(displayResult)
     .fail(displayError)
     .done();
@@ -46,11 +46,12 @@ api = new HueApi(host, username);
 //api.getConfig().then(displayResult).done();
 //api.getVersion().then(displayResult).done();
 //api.getFullState().then(displayResult).done();
-
+/*
 api.setLightState(1, {"on": true, "rgb": [255,0,0]}) // provide a value of false to turn off
     .then(displayResult)
     .fail(displayError)
     .done();
+*/
 
 client.open((err)=> {
     if (err) {
