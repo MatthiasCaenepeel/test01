@@ -22,9 +22,16 @@ var displayError = function(err) {
 
 
 function receiveMessageCallback(msg) {
-    console.log("Msg received!");
+    console.log(chalk.yellow.bold("------------------------------"));
+    console.log(chalk.yellow.bold("Message received from IoT Hub:"));
     var message = msg.getData();
     var data = JSON.parse(message);
+    console.log(chalk.blue.bold(data.rgb));
+
+    api.setLightState(1,data) // provide a value of false to turn off
+    .then(displayResult)
+    .fail(displayError)
+    .done();
 }
 
 console.log(chalk.yellow.bold("IP address: ", argv.ip));
@@ -40,15 +47,10 @@ api = new HueApi(host, username);
 //api.getVersion().then(displayResult).done();
 //api.getFullState().then(displayResult).done();
 
-api.setLightState(1, {"on": true, "rgb": [255,255,0]}) // provide a value of false to turn off
+api.setLightState(1, {"on": true, "rgb": [255,0,0]}) // provide a value of false to turn off
     .then(displayResult)
     .fail(displayError)
     .done();
-
-/*process.on('uncaughtException', function (err) {
-    console.log(err);
-}); */
-
 
 client.open((err)=> {
     if (err) {
